@@ -52,6 +52,7 @@ $(function() {
 	}
 
 	function close_menu() {
+        console.log("Close Menu");
 		$(".medical_form").css("display", "none");
 		$(".new-form").css("display", "none");		
 		$('.patient-info').css("display", "none");
@@ -68,14 +69,15 @@ $(function() {
 	}
 
 	$('#close-button').click(function() {
-		$.post('http://medical_id/close', JSON.stringify({}))
+        console.log("Arrives here");
+		$.post('http://FiveM-EMSForm/close', JSON.stringify({}))
 	});
 
 	$('#search_button').click(function(){
 		var firstName = $('#search_first').val();
 		var lastName = $('#search_last').val();
 		if (validate(firstName, lastName)) {	
-			$.post('http://medical_id/search', JSON.stringify({
+			$.post('http://FiveM-EMSForm/search', JSON.stringify({
 				firstName: firstName.toUpperCase(),
 				lastName: lastName.toUpperCase()
 			}))
@@ -84,7 +86,7 @@ $(function() {
 
 	$('#new').click(function() {
 		$('#search_text').val('');
-		$.post('http://medical_id/new', JSON.stringify({}))
+		$.post('http://FiveM-EMSForm/new', JSON.stringify({}))
 	});
 
 	//SAVE NEW FORM
@@ -92,7 +94,7 @@ $(function() {
 		var firstName = $('#first_name').val().toUpperCase();
 		var lastName = $('#last_name').val().toUpperCase();
 		if (validate(firstName, lastName)) {
-			$.post('http://medical_id/save', JSON.stringify({
+			$.post('http://FiveM-EMSForm/save', JSON.stringify({
 				form: "newForm",
 				firstName: firstName,
 				lastName: lastName,
@@ -121,7 +123,7 @@ $(function() {
             $('#saving').text('Update').attr('id', 'update');
             return false;
         }
-		$.post('http://medical_id/save', JSON.stringify({
+		$.post('http://FiveM-EMSForm/save', JSON.stringify({
 			form: "updateForm",
 			firstName: $('#pt-first').text(),
 			lastName: $('#pt-last').text(),
@@ -136,7 +138,7 @@ $(function() {
 
 	//DELETE FORM
 	$('#delete').click(function()  {
-		$.post('http://medical_id/delete', JSON.stringify({
+		$.post('http://FiveM-EMSForm/delete', JSON.stringify({
 			firstName: $('#pt-first').text(),
 			lastName: $('#pt-last').text()  
 		}))

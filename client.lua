@@ -42,6 +42,7 @@ function newForm()
 end
 
 RegisterNUICallback('close', function()
+    print("Close LUA")
 	disableMenu()
 end)
 
