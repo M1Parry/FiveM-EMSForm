@@ -1,18 +1,27 @@
+function getDate() {
+    let dateObj = new Date();
+    let month = dateObj.getMonth() + 1;
+    let day = String(dateObj.getDate()).padStart(2, '0');
+    let year = dateObj.getFullYear();
+    let output = month + '/' + day  + '/' + year;
+    return output;
+}
+
 $(function() {
 	window.addEventListener('message', function(event) {
 		if (event.data.type == 'enableGUI') {
 			open_menu();
 		}
-		if (event.data.type == 'close') {
+		else if (event.data.type == 'close') {
 			close_menu();
 		}
-		if (event.data.type == 'new') {
+		else if (event.data.type == 'new') {
 			new_form();
 		}
-		if (event.data.type === 'result') {
+		else if (event.data.type === 'result') {
 			result(event.data); //show Patient info
 		}
-		if (event.data.type == 'response') {
+		else if (event.data.type == 'response') {
 			response(event.data.message);
 		}
 	});
@@ -91,8 +100,10 @@ $(function() {
 
 	//SAVE NEW FORM
 	$('#save').click(function() {
+		var date = getDate();
 		var firstName = $('#first_name').val().toUpperCase();
 		var lastName = $('#last_name').val().toUpperCase();
+		var reason = date + ' - ' + $('#reason').val();
 		if (validate(firstName, lastName)) {
 			$.post('http://FiveM-EMSForm/save', JSON.stringify({
 				form: "newForm",
@@ -100,7 +111,7 @@ $(function() {
 				lastName: lastName,
 				dob: $('#dob-pt').val(),
 				allergies: $('#pt-allergies').val(),
-				injuries: $('#reason').val(),
+				injuries: reason,
 			}))
 			$('.new-form input').attr("disabled", 'disabled');
 			$('#pt-allergies').attr("disabled", 'disabled');
@@ -117,6 +128,8 @@ $(function() {
 	});
 
 	$('#update').parent().on('click', '#saving', function() {
+		var date = getDate();
+		var reason = date + ' - ' + $('#assess').val() + '\n';
         if (!$('#assess').val()) {
             $('#allergies-info').attr("disabled", 'disabled');
             $('#assessment').css("display", "none");
@@ -128,9 +141,8 @@ $(function() {
 			firstName: $('#pt-first').text(),
 			lastName: $('#pt-last').text(),
 			allergies: $('#allergies-info').val(),
-			injuries: $('#assess').val() + "\n"
+			injuries: reason,
 		}))
-        //console.log("Injuries: " + $('#assess' + "\n").val()
 		$('#allergies-info').attr("disabled", 'disabled');
 		$('#assessment').css("display", "none");
 		$('#saving').text('Update').attr('id', 'update');
